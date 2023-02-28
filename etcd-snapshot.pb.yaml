@@ -1,0 +1,13 @@
+---
+- name: Snapshot etcd kuber
+  hosts: master
+  become: yes
+  tasks:
+    - name: Run script
+      ansible.builtin.script:
+        cmd: etcd_snapshot.sh
+      register: name_file
+    - name: Copy snap to store
+      fetch:
+        src: "~/{{ name_file.stdout_lines[-1] }}"
+        dest: ./
